@@ -35,8 +35,7 @@ COPY --from=builder /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
 # Copy the binary from builder stage
 COPY --from=builder /build/app /app
 
-# Copy any static files if they exist (pb_public directory)
-COPY --from=builder /build/pb_public /pb_public
+
 
 # Use non-root user (distroless nonroot user has UID 65532)
 USER 65532:65532
