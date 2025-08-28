@@ -28,3 +28,4 @@ go.work.sum
 /pb_data
 /tmp
 mx_work.go
+credentials.txt
