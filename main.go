@@ -24,7 +24,7 @@ func main() {
 	// Load env variables
 	err := godotenv.Load()
 	if err != nil {
-		log.Println("Error loading .env file")
+		log.Fatal("Error loading .env file")
 	}
 
 	everyMinutes := os.Getenv("EVERY_MINUTES")
@@ -40,7 +40,7 @@ func main() {
 
 	// Schedule the job
 	cronExpression := fmt.Sprintf("*/%s * * * *", everyMinutes)
-	app.Cron().MustAdd("redditPosts", cronExpression, func() {
+	app.Cron().Add("redditPosts", cronExpression, func() {
 		app.Logger().Info("Running redditPosts job")
 
 		// get keywords
