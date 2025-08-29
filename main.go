@@ -24,7 +24,7 @@ func main() {
 	// Load env variables
 	err := godotenv.Load()
 	if err != nil {
-		log.Fatal("Error loading .env file")
+		log.Println("Error loading .env file")
 	}
 
 	everyMinutes := os.Getenv("EVERY_MINUTES")
@@ -101,7 +101,7 @@ func main() {
 			newPostsCount++
 		}
 
-		// Notify
+		// Notify to NTFY
 		message := fmt.Sprintf("Found %d new relevant posts on reddit", newPostsCount)
 		if newPostsCount > 0 {
 			err := jobs.SendMessage(message)
