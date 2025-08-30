@@ -43,7 +43,7 @@ func main() {
 
 	// Schedule the job
 	cronExpression := fmt.Sprintf("*/%s * * * *", everyMinutes)
-	app.Cron().Add("redditPosts", cronExpression, func() {
+	app.Cron().MustAdd("redditPosts", cronExpression, func() {
 		app.Logger().Info("Running redditPosts job")
 
 		// get keywords
