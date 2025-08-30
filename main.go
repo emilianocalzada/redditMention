@@ -42,6 +42,12 @@ func main() {
 		log.Fatal("FROM_TIME is not set")
 	}
 
+	// Number of pages to search
+	pageCount := os.Getenv("PAGE_COUNT")
+	if pageCount == "" {
+		log.Fatal("PAGE_COUNT is not set")
+	}
+
 	// ntfy endpoint and token
 	ntfyEndpoint := os.Getenv("NTFY_ENDPOINT")
 	if ntfyEndpoint == "" {
@@ -97,7 +103,7 @@ func main() {
 			keywordsKeys = append(keywordsKeys, keyword)
 		}
 
-		posts, err := jobs.GetRedditPosts(keywordsKeys, 1, fromTime, app, aparserEndpoint, aparserPassword)
+		posts, err := jobs.GetRedditPosts(keywordsKeys, pageCount, fromTime, app, aparserEndpoint, aparserPassword)
 		if err != nil {
 			app.Logger().Error(fmt.Sprintf("Failed to get reddit posts: %v", err))
 			return

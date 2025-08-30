@@ -6,7 +6,6 @@ import (
 	"fmt"
 	"io"
 	"net/http"
-	"strconv"
 	"strings"
 
 	"github.com/pocketbase/pocketbase"
@@ -110,7 +109,7 @@ func parseRedditResponse(body []byte, app *pocketbase.PocketBase) ([]RedditPost,
 	return posts, nil
 }
 
-func GetRedditPosts(queries []string, pageCount int, time string, app *pocketbase.PocketBase, endpoint, password string) ([]RedditPost, error) {
+func GetRedditPosts(queries []string, pageCount, time string, app *pocketbase.PocketBase, endpoint, password string) ([]RedditPost, error) {
 	// Create the request payload
 	request := BulkRequest{
 		Password: password,
@@ -126,7 +125,7 @@ func GetRedditPosts(queries []string, pageCount int, time string, app *pocketbas
 				{
 					Type:  "override",
 					Id:    "pagecount",
-					Value: strconv.Itoa(pageCount),
+					Value: pageCount,
 				},
 				{
 					Type:  "override",
