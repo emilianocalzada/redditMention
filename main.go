@@ -18,14 +18,17 @@ type Keyword struct {
 	Created  string `db:"created" json:"created"`
 }
 
+func init() {
+	// Only load .env if it exists (e.g. local dev)
+	if _, err := os.Stat(".env"); err == nil {
+		if err := godotenv.Load(); err != nil {
+			log.Println("Warning: could not load .env file")
+		}
+	}
+}
+
 func main() {
 	app := pocketbase.New()
-
-	// Load env variables
-	err := godotenv.Load()
-	if err != nil {
-		log.Fatal("Error loading .env file")
-	}
 
 	everyMinutes := os.Getenv("EVERY_MINUTES")
 	if everyMinutes == "" {
