@@ -110,10 +110,10 @@ func parseRedditResponse(body []byte, app *pocketbase.PocketBase) ([]RedditPost,
 	return posts, nil
 }
 
-func GetRedditPosts(queries []string, pageCount int, time string, app *pocketbase.PocketBase) ([]RedditPost, error) {
+func GetRedditPosts(queries []string, pageCount int, time string, app *pocketbase.PocketBase, endpoint, password string) ([]RedditPost, error) {
 	// Create the request payload
 	request := BulkRequest{
-		Password: "Czt.WpRA@JHg2*W3Zc@NQ3mgCP8*o_n",
+		Password: password,
 		Action:   "bulkRequest",
 		Data: BulkData{
 			Parser:       "Reddit::Posts",
@@ -162,8 +162,7 @@ func GetRedditPosts(queries []string, pageCount int, time string, app *pocketbas
 
 	// Create the HTTP request
 	// Replace "YOUR_API_ENDPOINT" with the actual API endpoint
-	apiURL := "http://91.99.136.223:9091/API"
-	req, err := http.NewRequest("POST", apiURL, bytes.NewBuffer(jsonData))
+	req, err := http.NewRequest("POST", endpoint, bytes.NewBuffer(jsonData))
 	if err != nil {
 		fmt.Printf("Error creating request: %v\n", err)
 		return nil, err

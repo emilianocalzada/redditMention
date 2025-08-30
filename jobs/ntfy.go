@@ -8,14 +8,14 @@ import (
 	"strings"
 )
 
-func SendMessage(content string) error {
-	req, err := http.NewRequest("POST", "https://notifications.mobilecraft.io/reddit_mentions", strings.NewReader(content))
+func SendMessage(endpoint, token, content string) error {
+	req, err := http.NewRequest("POST", endpoint, strings.NewReader(content))
 	if err != nil {
 		return err
 	}
 
 	req.Header.Set("Content-Type", "text/plain")
-	req.Header.Set("Authorization", "Bearer tk_ml841hx0boanq7n3lzsc9dpfgf6qu")
+	req.Header.Set("Authorization", "Bearer "+token)
 
 	client := &http.Client{}
 	response, err := client.Do(req)

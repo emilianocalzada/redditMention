@@ -30,6 +30,7 @@ func init() {
 func main() {
 	app := pocketbase.New()
 
+	// Check for new reddit posts every X minutes
 	everyMinutes := os.Getenv("EVERY_MINUTES")
 	if everyMinutes == "" {
 		log.Fatal("EVERY_MINUTES is not set")
@@ -39,6 +40,27 @@ func main() {
 	fromTime := os.Getenv("FROM_TIME")
 	if fromTime == "" {
 		log.Fatal("FROM_TIME is not set")
+	}
+
+	// ntfy endpoint and token
+	ntfyEndpoint := os.Getenv("NTFY_ENDPOINT")
+	if ntfyEndpoint == "" {
+		log.Fatal("NTFY_ENDPOINT is not set")
+	}
+
+	ntfyToken := os.Getenv("NTFY_TOKEN")
+	if ntfyToken == "" {
+		log.Fatal("NTFY_TOKEN is not set")
+	}
+
+	// A-parser endpoint and password
+	aparserEndpoint := os.Getenv("APARSER_ENDPOINT")
+	if aparserEndpoint == "" {
+		log.Fatal("APARSER_ENDPOINT is not set")
+	}
+	aparserPassword := os.Getenv("APARSER_PASSWORD")
+	if aparserPassword == "" {
+		log.Fatal("APARSER_PASSWORD is not set")
 	}
 
 	// Schedule the job
@@ -75,7 +97,7 @@ func main() {
 			keywordsKeys = append(keywordsKeys, keyword)
 		}
 
-		posts, err := jobs.GetRedditPosts(keywordsKeys, 1, fromTime, app)
+		posts, err := jobs.GetRedditPosts(keywordsKeys, 1, fromTime, app, aparserEndpoint, aparserPassword)
 		if err != nil {
 			app.Logger().Error(fmt.Sprintf("Failed to get reddit posts: %v", err))
 			return
@@ -107,7 +129,7 @@ func main() {
 		// Notify to NTFY
 		message := fmt.Sprintf("Found %d new relevant posts on reddit", newPostsCount)
 		if newPostsCount > 0 {
-			err := jobs.SendMessage(message)
+			err := jobs.SendMessage(ntfyEndpoint, ntfyToken, message)
 			if err != nil {
 				app.Logger().Error(fmt.Sprintf("Failed to send ntfy message: %v", err))
 			}
